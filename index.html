@@ -17,13 +17,24 @@
     <div class="container">
         <header class="top">
             <img src="arquivos/logo1.png" alt="">
-            <button><ion-icon name="people"></ion-icon></button>
+            <button onclick="abrirMenu()"><ion-icon name="people"></ion-icon></button>
         </header>
+
         <main class="box-chat">
             <div class="chat">
-                <div class="entrada-saida">
-                    <p class="horario">(09:21:45)</p>
-                    <p class="mensagem"><span style="font-weight: bold;">João</span> entra na sala...</p>
+                <div class="entrada-saida texto-msg">
+                    <time>(09:21:45)</time>
+                    <p class="acao"><span class="from">João</span> entra na sala...</p>
+                </div>
+                <div class="geral texto-msg">
+                    <time>(09:21:45)</time>
+                    <p class="acao"><span class="from">João</span> para <span class="to">Todos</span>:</p>
+                    <p class="mensagem">Oi!</p>
+                </div>
+                <div class="privada texto-msg">
+                    <time>(09:21:45)</time>
+                    <p class="acao"><span class="from">João</span> reservadamente para <span class="to">Maria</span>:</p>
+                    <p class="mensagem"> Oi xuxuzinho</p>
                 </div>
             </div>
         </main>
@@ -32,6 +43,34 @@
             <textarea name="send-message" id="send-message" rows="1" placeholder="Escreva aqui..."></textarea>
             <button><ion-icon name="paper-plane-outline"></ion-icon></button>
         </footer>
+
+        <div id="menu" onclick="fecharMenu()">
+            <nav>
+                <h1>Escolha um contato para enviar mensagem:</h1>
+                <ul class="pessoas-online">
+                    <li>
+                        <ion-icon name="people"></ion-icon>    
+                        Todos
+                    </li>
+                    <li>
+                        <ion-icon name="person-circle"></ion-icon>
+                        João
+                    </li>
+                </ul>
+
+                <h1>Escolha a visibilidade</h1>
+                <ul class="visibilidade">
+                    <li>
+                        <ion-icon name="lock-open"></ion-icon>
+                        público
+                    </li>
+                    <li>
+                        <ion-icon name="lock-closed"></ion-icon>
+                        reservadamente
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
 
     <!--icons-->
