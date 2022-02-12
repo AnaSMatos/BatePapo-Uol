@@ -83,6 +83,10 @@ time{
     background: #FFDEDE;
 }
 
+.hidden{
+    display: none;
+}
+
 .from, .to{
     font-weight: bold;
 }
