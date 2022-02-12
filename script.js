@@ -8,6 +8,9 @@ let mensagemEnviada = {
     type:"message"
 }
 
+let msgAntiga="";
+let msgNova="";
+
 
 requisicao.then(loginSucesso);
 requisicao.catch(loginErro);
@@ -42,6 +45,7 @@ function failGetMessages(){
 function printMessages(response){
     let allMessages = response.data;
     let chat = document.querySelector(".chat");
+    chat.innerHTML = ""
     for(let i=0; i < allMessages.length; i++){
         if (allMessages[i].type === "status"){
             chat.innerHTML += `
@@ -69,6 +73,12 @@ function printMessages(response){
             
             `
         }
+    }
+
+    msgNova = document.querySelector(".texto-msg:last-child")
+    if (msgNova.innerHTML !== msgAntiga.innerHTML) {
+        msgNova.scrollIntoView();
+        msgAntiga = msgNova;
     }
 }
 
