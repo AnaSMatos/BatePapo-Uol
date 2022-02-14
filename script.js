@@ -1,6 +1,17 @@
 //User ID
-const nomeUsuario = {name: prompt("Digite seu nome")}
-const requisicao = axios.post('https://mock-api.driven.com.br/api/v4/uol/participants', nomeUsuario)
+
+let nomeUsuario;
+
+function login(){
+    nomeUsuario = {name: prompt("Digite seu nome")}
+    const requisicao = axios.post('https://mock-api.driven.com.br/api/v4/uol/participants', nomeUsuario)
+    requisicao.then(loginSucesso);
+    requisicao.catch(loginErro);
+}
+
+login();
+
+
 let mensagemEnviada = {
     from: nomeUsuario.name,
     to:"Todos",
@@ -12,17 +23,17 @@ let msgAntiga="";
 let msgNova="";
 
 
-requisicao.then(loginSucesso);
-requisicao.catch(loginErro);
+
 
 function logado(){
     const usuarioOnline = axios.post('https://mock-api.driven.com.br/api/v4/uol/status', nomeUsuario);
 }
+
 //Entrou na sala
 function loginSucesso(){
     //esconder login
+    getMessages();
     setInterval(getMessages, 3000);
-    //ver os participantes
     setInterval(logado, 5000);
 }
 
@@ -34,7 +45,7 @@ function getMessages(){
 
 function loginErro(){
     alert("Esse nome de usuário já está sendo usado!")
-    const nomeUsuario = {name: prompt("Digite seu nome")}
+    login();
 }
 
 function failGetMessages(){
@@ -42,33 +53,43 @@ function failGetMessages(){
     window.location.reload();
 }
 
+function filterMessages(objeto){
+    for(i=0; i<objeto.length; i++){
+        if (objeto[i].to === "Todos" || objeto[i].to === nomeUsuario){
+            return true;
+        }else{
+            return false;
+        }
+    }
+}
+
+
 function printMessages(response){
     let allMessages = response.data;
+    allMessages.filter(filterMessages);
     let chat = document.querySelector(".chat");
     chat.innerHTML = ""
     for(let i=0; i < allMessages.length; i++){
         if (allMessages[i].type === "status"){
             chat.innerHTML += `
-                <div class="entrada-saida texto-msg">
-                    <time>(${allMessages[i].time})</time>
-                    <p class="acao"><span class="from">${allMessages[i].from}</span> ${allMessages[i].text}</p>
+                <div class="entrada-saida texto-msg" data-identifier="message">
+                    <p><time>(${allMessages[i].time})</time>
+                    <span class="from">${allMessages[i].from}</span> ${allMessages[i].text}</p>
                 </div>
             `
         } else if (allMessages[i].type === "message"){
             chat.innerHTML += `
-                <div class="geral texto-msg">
-                    <time>(${allMessages[i].time})</time>
-                    <p class="acao"><span class="from">${allMessages[i].from}</span> para <span class="to">${allMessages[i].to}</span>:</p>
-                    <p class="mensagem">${allMessages[i].text}</p>
+                <div class="geral texto-msg" data-identifier="message">
+                    <p><time>(${allMessages[i].time}) </time> <span class="from"> ${allMessages[i].from} </span> 
+                    para <span class="to"> ${allMessages[i].to} </span>: ${allMessages[i].text}</p>
                 </div>
             `
 
         } else if (allMessages[i].type === "private_message"){
             chat.innerHTML += `
-                <div class="privada texto-msg hidden">
-                    <time>(${allMessages[i].time})</time>
-                    <p class="acao"><span class="from">${allMessages[i].from}</span> reservadamente para <span class="to">${allMessages[i].to}</span>:</p>
-                    <p class="mensagem"> ${allMessages[i].text}</p>
+                <div class="privada texto-msg data-identifier="message">
+                    <p><time>(${allMessages[i].time}) </time><span class="from">${allMessages[i].from}</span> 
+                    reservadamente para <span class="to">${allMessages[i].to}</span>: ${allMessages[i].text}</p>
                 </div>
             
             `
@@ -86,18 +107,59 @@ function sendMessage(){
     let mensagem = document.querySelector("#send-message");
     mensagemEnviada.text = mensagem.value;
     postMessage = axios.post("https://mock-api.driven.com.br/api/v4/uol/messages", mensagemEnviada)
-
+    postMessage.catch(failSendMessage)
     mensagem.value = "";
 }
 
+function failSendMessage(){
+    alert("Algo deu errado! A página será recarregada.")
+    window.location.reload();
+}
 
 
 //Menu
 function abrirMenu(){
-    document.getElementById("menu").style.display = "block";
+    let open = document.querySelector("aside");
+    open.classList.remove("hidden")
 }
 
 function fecharMenu(){
-    document.getElementById("menu").style.display = "none";
+    let open = document.querySelector(".menu");
+    open.classList.add("hidden")
+}
+
+function participantes(){
+    const promisse = axios.get("https://mock-api.driven.com.br/api/v4/uol/participants");
+    promisse.then(printParticipants);
+    promisse.catch(erroParticipantes);
+}
+
+function printParticipants(response){
+    let allParticipants = response.data;
+    let ul = document.querySelector(".pessoas-online")
+
+    ul.innerHTML = `
+    <li onclick="selecionado(this)">
+        <ion-icon name="people"></ion-icon>    
+        Todos
+        <ion-icon class="checkmark-off" name="checkmark-outline"></ion-icon>
+    </li>
+    `
+    for(let i = 0; i < allParticipants.length; i++){
+        const participant = allParticipants[i];
+
+        ul.innerHTML += `
+            <li onclick="selecionado(this)">
+                <ion-icon name="people"></ion-icon>    
+                ${participant.name}
+                <ion-icon class="checkmark-off" name="checkmark-outline"></ion-icon>
+            </li>
+        `
+    }
+}
+
+function erroParticipantes(){
+    alert("Ops! Algo deu errado. A página será recarregada")
+    window.location.reload();   
 }
 

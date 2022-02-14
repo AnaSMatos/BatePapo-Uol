@@ -2,8 +2,10 @@
     font-family: 'Roboto', sans-serif;
 }
 
-body{
-    overflow-x: hidden;
+
+.container{
+    width: 100vw;
+    overflow: hidden;
 }
 
 /*Topo*/
@@ -41,7 +43,7 @@ header{
 
 .box-chat{
     width: 100vw;
-    height: 100vh;
+    height: calc(100vh-180px);
     position: absolute;
     z-index: 0;
     background: #F3F3F3;
@@ -49,6 +51,7 @@ header{
 
 .chat{
     margin: 100px 0;
+    z-index: 0;
 }
 
 time{
@@ -60,14 +63,22 @@ time{
 .texto-msg{
     margin-right: 8px;
     width: 100%;
+    min-height: 40px;
     border-radius: 2px;
     font-size: 14px;
     display: flex;
-    height: 40px;
     align-items: center;
     margin-bottom: 4px;
 }
 
+.texto-msg p{
+    display: inline;
+}
+
+
+.texto-msg:last-child{
+    margin-bottom: 80px;
+}
 /*Entrada e saída da sala*/
 .entrada-saida{
     background: #DCDCDC;
@@ -83,9 +94,7 @@ time{
     background: #FFDEDE;
 }
 
-.hidden{
-    display: none;
-}
+
 
 .from, .to{
     font-weight: bold;
@@ -143,18 +152,17 @@ textarea::placeholder{
 }
 
 /*Menu*/
-#menu{
+.menu{
     background: rgba(0, 0, 0, 0.6);
-    position: absolute;
+    position: fixed;
     width: 100vw;
     height: 100vh;
     z-index: 2;
-    display: none;
+    display: block;
 }
 
 nav{
     position: absolute;
-    z-index: 3;
     background: white;
     height: 100vh;
     width: 65vw;
@@ -163,11 +171,24 @@ nav{
     flex-direction: column;
     align-items: center;
     font-family: 'Roboto', sans-serif;
+    z-index: 3;
 }
 
 nav ion-icon{
     font-size: 25px;
     margin-right: 10px;
+}
+
+nav .checkmark-off{
+    display: none;
+}
+
+nav .checkmark-on{
+    font-size: 20px;
+    color: #28BB25;
+    position: absolute;
+    right: 0;
+    font-weight: bold;
 }
 
 nav h1{
@@ -182,11 +203,17 @@ nav h1{
 }
 
 nav ul{
-    width: 86%;
+    width: 83%;
 }
 
 nav li{
     height: 36px;
     align-items: center;
     display: flex;
+    position: relative;
+    cursor: pointer;
+}
+
+.hidden{
+    display: none;
 }

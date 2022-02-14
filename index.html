@@ -28,37 +28,38 @@
 
         <footer class="message">
             <textarea name="send-message" id="send-message" rows="1" placeholder="Escreva aqui..."></textarea>
-            <button onclick="sendMessage()" type="submit"><ion-icon name="paper-plane-outline"></ion-icon></button>
+            <button onclick="sendMessage()" type="submit" data-identifier="send-message"><ion-icon name="paper-plane-outline"></ion-icon></button>
         </footer>
 
-        <div id="menu" onclick="fecharMenu()">
+        <aside class="menu hidden" onclick="fecharMenu()">
             <nav>
                 <h1>Escolha um contato para enviar mensagem:</h1>
                 <ul class="pessoas-online">
-                    <li>
+                    <li onclick="selecionado(this)">
                         <ion-icon name="people"></ion-icon>    
                         Todos
+                        <ion-icon class="checkmark-on" name="checkmark-outline"></ion-icon>
                     </li>
-                    <li>
-                        <ion-icon name="person-circle"></ion-icon>
-                        João
-                    </li>
+
                 </ul>
 
                 <h1>Escolha a visibilidade</h1>
                 <ul class="visibilidade">
-                    <li>
+                    <li onclick="selecionado(this)">
                         <ion-icon name="lock-open"></ion-icon>
                         público
+                        <ion-icon class="checkmark-on" name="checkmark-outline"></ion-icon>
                     </li>
-                    <li>
+                    <li onclick="selecionado(this)">
                         <ion-icon name="lock-closed"></ion-icon>
                         reservadamente
+                        <ion-icon class="checkmark-off" name="checkmark-outline"></ion-icon>
                     </li>
                 </ul>
             </nav>
-        </div>
+        </aside>
     </div>
+
     <!--axios-->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!--script-->
